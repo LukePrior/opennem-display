@@ -1,6 +1,6 @@
 # HyperPixel 2.1 Round OpenNEM Display
 
-Creating a minature live display of the fuel types in the Australian electricity grid.
+Creating a miniature live display of the fuel types in the Australian electricity grid.
 
 # Setup
 
