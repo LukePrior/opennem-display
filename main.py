@@ -1,11 +1,14 @@
+"""
+HyperPixel 2.1 Round OpenNEM Display
+"""
+
 # Dependencies
-import pygame
 import math
-import random
-import numpy as np
 import urllib.request
 import json
 from datetime import date, datetime
+import pygame
+import numpy as np
 
 # Constants
 current_year = date.today().year
