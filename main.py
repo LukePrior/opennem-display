@@ -134,7 +134,7 @@ technology_colour = {
     "bioenergy_biogas": [29, 122, 121],
     "gas": [255, 136, 19],
     "coal": [19, 19, 19],
-    "solar": [254, 213, 0],
+    "solar": [254, 214, 0],
     "wind": [65, 117, 5],
     "hydro": [69, 130, 180],
     "battery_discharging": [0, 162, 250],
