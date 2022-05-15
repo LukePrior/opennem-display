@@ -3,6 +3,7 @@ HyperPixel 2.1 Round OpenNEM Display
 """
 
 # Dependencies
+import argparse
 import math
 import urllib.request
 import json
@@ -16,9 +17,6 @@ previous_year = current_year - 1
 
 last_refresh = datetime.now()
 refresh_duration = 5
-
-minSwipe = 50
-maxClick = 15
 
 base_url = "https://data.opennem.org.au/v3/stats/au"
 
@@ -279,7 +277,7 @@ def order_data(data):
     return ordered_data
 
 # Get new data given parameters
-def refresh_data(region1 = "NEM", period1 = "week", version1 = "default"):
+def refresh_data(region1, period1, version1):
     global data, raw, totalpower, region, period, version
     region = region1
     period = period1
@@ -295,7 +293,27 @@ def refresh_data(region1 = "NEM", period1 = "week", version1 = "default"):
 
     data = order_data(data)
 
-refresh_data()
+# Read arguments
+parser = argparse.ArgumentParser(description='Process region, period, display, and time options.')
+
+parser.add_argument("-r", "--region", type=str, help="Set region ('NEM', 'NSW', 'QLD', 'SA', 'TAS', 'VIC', 'WA')")
+parser.add_argument("-p", "--period", type=str, help="Set period ('instant', 'day', 'week', 'month', 'year')")
+parser.add_argument("-d", "--display", type=str, help="Set display ('default', 'simplified', 'flexible', 'renewable')")
+parser.add_argument("-t", "--time", type=int, help="Set refresh time in minutes")
+
+args = parser.parse_args()
+
+if args.region != None and args.region in region_list:
+    region = args.region
+if args.period != None and args.period in times_list:
+    period = args.period
+if args.display != None and args.display in types_list:
+    version = args.display
+if args.time != None:
+    refresh_duration = args.time
+
+# Get data
+refresh_data(region, period, version)
 
 # Initialise PyGame
 pygame.init()
@@ -319,7 +337,7 @@ hoveringTechnology = ""
 hoveringPercentage = ""
 hoveringPosition = [0,0]
 hoveringTime = datetime.now()
-hovering_period = 3
+hovering_period = 5
 hoveringCount = 0
 
 # Render chart
@@ -331,8 +349,11 @@ while active:
             position = list(pygame.mouse.get_pos())
             distance = ((((position[0] - hoveringPosition[0])**2) + ((position[1] - hoveringPosition[1])**2) )**0.5)
             hoveringPosition = position
-            hovering_difference = hoveringTime - datetime.now()
-            if distance < 60 and hovering_difference.total_seconds() < hovering_period:
+            hovering_difference = datetime.now() - hoveringTime
+            if hovering_difference.total_seconds() > hovering_period:
+                hoveringCount = 1
+                hoveringTime = datetime.now()
+            elif distance < 60 and hovering_difference.total_seconds() < hovering_period:
                 hoveringCount += 1
             else:
                 hoveringCount = 0
@@ -375,7 +396,7 @@ while active:
                 values = list(technology_colour.values())
                 if color in values:
                     technology = list(technology_colour.keys())[values.index(color)]
-                    if (color != hoveringColor or hovering == False) and technology in data:
+                    if (color != hoveringColor or hovering is False) and technology in data:
                         hoveringColor = color
                         hoveringTechnology = technology
                         hoveringPercentage = str(round(data[technology]/3.6,1))+"%"
