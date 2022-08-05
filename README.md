@@ -20,7 +20,7 @@ screen = pygame.display.set_mode((480, 480))
 
 # DIYODE Magazine Article
 
-[Coming Soon](https://diyodemag.com)
+[Diyode - Electricity Grid Dashboard - Issue 60](https://diyodemag.com/projects/electricity_grid_dashboard_hyperpixel_raspberry_pi_zero_2_w)
 
 # License
 
