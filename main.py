@@ -208,7 +208,7 @@ def download_data(region="NEM", time="month"):
 def process_data(data, time="month"):
     raw = {"default": {}, "simplified": {}, "flexible": {}, "renewable": {}}
     for technology in data["data"]:
-        if technology["code"] != "battery_charging" and technology["code"] != "exports" and technology["code"] != "pumps":
+        if technology["code"] != "battery_charging" and technology["code"] != "exports" and technology["code"] != "pumps" and technology["code"] != "NEM":
             
             amount = 0
             
@@ -319,8 +319,8 @@ refresh_data(region, period, version)
 pygame.init()
 pygame.font.init()
 font = pygame.font.SysFont('Helvetica', 25, bold=True)
-screen = pygame.display.set_mode((480, 480), pygame.FULLSCREEN)
-#screen = pygame.display.set_mode((480, 480))
+#screen = pygame.display.set_mode((480, 480), pygame.FULLSCREEN)
+screen = pygame.display.set_mode((480, 480))
 
 # Donut chart properties
 white = (255,255,255)
